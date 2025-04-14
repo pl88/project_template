@@ -91,3 +91,7 @@ generate_app_file(path_to_main)
 
 generate_dockerfile(python_version, project_name)
 generate_makefile(project_name)
+
+
+# import os
+# os.system(f"poetry run alembic init {project_name}/src/migrations")
