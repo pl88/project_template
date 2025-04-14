@@ -13,7 +13,11 @@ else
 
     echo "Choose a Python version:"
     read VERSION
-    poetry init --name $PROJECT_NAME --description  "my proj" --author $AUTHOR_NAME --python $VERSION --dependency pytest --dev-dependency coverage -l MIT --no-interaction
-    poetry env use 3.12.8
+    pyenv local $VERSION
+    poetry init --name $PROJECT_NAME --description  "my proj" --author $AUTHOR_NAME --python ^$VERSION --dependency pytest --dev-dependency coverage -l MIT --no-interaction
+    poetry env use $(pyenv which python)
+    poetry add fastapi
+    poetry add uvicorn
+    poetry install --no-root
     poetry run python main.py $VERSION $PROJECT_NAME
 fi
