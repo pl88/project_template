@@ -84,7 +84,16 @@ def generate_app_file(project_name):
 
 root_dir.joinpath(project_name, "src").mkdir(parents=True, exist_ok=True)
 root_dir.joinpath(project_name, "src", "__init__.py").touch()
+root_dir.joinpath(project_name, "src", "routers").mkdir(parents=True, exist_ok=True)
+root_dir.joinpath(project_name, "src", "routers", "__init__.py").touch()
+root_dir.joinpath(project_name, "src", "models").mkdir(parents=True, exist_ok=True)
+root_dir.joinpath(project_name, "src", "models", "__init__.py").touch()
+root_dir.joinpath(project_name, "src", "schemas").mkdir(parents=True, exist_ok=True)
+root_dir.joinpath(project_name, "src", "schemas", "__init__.py").touch()
+root_dir.joinpath(project_name, "src", "repositories").mkdir(parents=True, exist_ok=True)
+root_dir.joinpath(project_name, "src", "repositories", "__init__.py").touch()
 root_dir.joinpath(project_name, "tests").mkdir(parents=True, exist_ok=True)
+root_dir.joinpath(project_name, "tests" "__init__.py").touch()
 
 path_to_main = root_dir.joinpath(project_name, "src", "main.py")
 generate_app_file(path_to_main)

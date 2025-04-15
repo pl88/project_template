@@ -25,8 +25,8 @@ else
     read VERSION
     if [ -z "$VERSION" ]; then
         echo "Python version cannot be empty"
-        echo "Using default version '3.9.0'"
-        VERSION="3.9.0"
+        echo "Using default version '3.12.0'"
+        VERSION="3.12.0"
     fi
 
     if ! pyenv versions --bare | grep -q "^$VERSION$"; then
