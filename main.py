@@ -1,4 +1,5 @@
 import sys
+import os
 from pathlib import Path
 
 print(f"Haya! Using Python {sys.version}!")
@@ -93,7 +94,7 @@ root_dir.joinpath(project_name, "src", "schemas", "__init__.py").touch()
 root_dir.joinpath(project_name, "src", "repositories").mkdir(parents=True, exist_ok=True)
 root_dir.joinpath(project_name, "src", "repositories", "__init__.py").touch()
 root_dir.joinpath(project_name, "tests").mkdir(parents=True, exist_ok=True)
-root_dir.joinpath(project_name, "tests" "__init__.py").touch()
+root_dir.joinpath(project_name, "tests", "__init__.py").touch()
 
 path_to_main = root_dir.joinpath(project_name, "src", "main.py")
 generate_app_file(path_to_main)
@@ -101,6 +102,4 @@ generate_app_file(path_to_main)
 generate_dockerfile(python_version, project_name)
 generate_makefile(project_name)
 
-
-# import os
-# os.system(f"poetry run alembic init {project_name}/src/migrations")
+os.system(f"poetry run alembic init {root_dir.joinpath(project_name, "src", "migrations")}")

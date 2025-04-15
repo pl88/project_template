@@ -40,6 +40,8 @@ else
     poetry env use $(pyenv which python)
     poetry add fastapi
     poetry add uvicorn
+    poetry add sqlalchemy
+    poetry add alembic
     poetry install --no-root
     poetry run python main.py $VERSION $PROJECT_NAME
 fi
