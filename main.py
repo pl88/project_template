@@ -11,9 +11,14 @@ root_dir = Path.cwd()
 
 def generate_makefile(project_name):
     file_name = "Makefile"
-    makefile_content = (f"run:\n\tpoetry run uvicorn {project_name}.src.main:{project_name} --host 0.0.0.0 --port 8000\n\n"
-                        f"docker_build:\n\tdocker build -t {project_name}_img .\n\n"
-                        f"docker_run:\n\tdocker run -p 8000:8000 {project_name}_img"
+    image_name = f"{project_name}_img"
+    makefile_content = (f"run:\n\tdocker compose up -d --remove-orphans\n\n"
+                        f"docker_build:\n\tdocker build -t {image_name} .\n\n"
+                        f"docker_run:\n\tdocker run -d --name {project_name} -p 8000:8000 {image_name}\n\n"
+                        f"docker_restart:\n"
+                        f"\tdocker container stop {project_name} && \\\n"
+                        f"\tdocker container rm {project_name} && \\\n"
+                        f"\tdocker run -d --name {project_name} -p 8000:8000 {image_name}"
                         )
     if Path(file_name).exists():
         pass
@@ -49,17 +54,20 @@ def generate_dockerfile(python_version, project_name):
         Path(file_name).write_text(dockerfile_content)
 
 
-def generate_docker_composefile(project_name):
+def generate_docker_compose(project_name):
     file_name = "docker-compose.yaml"
-    docker_compose_version = "3.9"
-    docker_compose_content = (f"version: '{docker_compose_version}'\n\n"
-                              f"services:\n"
-                              f"  {project_name}:\n"
-                              f"    build:\n"
-                              f"      context: .\n"
-                              f"      dockerfile: Dockerfile\n"
-                              f"    volumes:\n"
-                              f"      - .:/code\n"
+    image_name = f"{project_name}_img"
+    docker_compose_content = (
+                                f"services:\n"
+                                f"  {project_name}:\n"
+                                f"    ports:\n"
+                                f"      - \"8000:8000\"\n"
+                                f"    image: {image_name}\n"
+                                f"    container_name: {project_name}\n"
+                                f"    restart: no\n"
+                                f"    volumes:\n"
+                                f"      - ./{project_name}/src:/{project_name}/{project_name}\n"
+                                f"    command: uvicorn {project_name}.main:app --host 0.0.0 --port 8000\n"
                               )
     if Path(file_name).exists():
         pass
@@ -101,5 +109,6 @@ generate_app_file(path_to_main)
 
 generate_dockerfile(python_version, project_name)
 generate_makefile(project_name)
+generate_docker_compose(project_name)
 
 os.system(f"poetry run alembic init {root_dir.joinpath(project_name, "src", "migrations")}")
