@@ -68,6 +68,22 @@ def generate_docker_compose(project_name):
                                 f"    volumes:\n"
                                 f"      - ./{project_name}/src:/{project_name}/{project_name}\n"
                                 f"    command: uvicorn {project_name}.main:app --host 0.0.0 --port 8000\n"
+                                f"  db:\n"
+                                f"    image: postgres:latest\n"
+                                f"    container_name: {project_name}_db\n"
+                                f"    restart: no\n"
+                                f"    environment:\n"
+                                f"      POSTGRES_USER: postgres\n"
+                                f"      POSTGRES_PASSWORD: postgres\n"
+                                f"      POSTGRES_DB: {project_name}\n"
+                                f"    ports:\n"
+                                f"      - \"5432:5432\"\n"
+                                f"  adminer:\n"
+                                f"    image: adminer\n"
+                                f"    container_name: {project_name}_adminer\n"
+                                f"    restart: no\n"
+                                f"    ports:\n"
+                                f"      - \"8080:8080\"\n"
                               )
     if Path(file_name).exists():
         pass
